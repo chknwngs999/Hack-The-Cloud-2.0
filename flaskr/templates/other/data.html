@@ -12,9 +12,9 @@
         <th>Country</td>
         <th>Population</td>
         <th>Active Cases</td>
-        <th>Active Cases % of Pop.</td>
+        <th>Active Cases (% of Pop.)</td>
         <th>Vaccinations</td>
-        <th>Vaccinated % of Pop.</td>
+        <th>Vaccinations (% of Pop.)</td>
         <th>Deceased</td>
       </tr>
     </thead>
@@ -22,7 +22,7 @@
       {% for i in range(length)%}
         <tr>
           <td>{{ countries[i] }}</td>
-          <td>{{ population }}</td>
+          <td>{{ population[i] }}</td>
           <td>{{ activecases[i] }}</td>
           {% if percent_active[i][:7] == 'Unknown'%}
             <td>{{ percent_active[i][:7] }}</td>

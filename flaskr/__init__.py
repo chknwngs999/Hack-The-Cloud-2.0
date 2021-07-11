@@ -73,13 +73,13 @@ def population_scraper():
     
   return return_list
 
-
+#secret key practice https://stackoverflow.com/questions/30873189/where-should-i-place-the-secret-key-in-flask
 #create app function
 def create_app(test_config=None):
   # create and configure the app - taken from https://flask.palletsprojects.com/en/2.0.x/tutorial/factory/
   app = Flask(__name__, instance_relative_config=True)
   app.config.from_mapping(
-      SECRET_KEY='dev',
+      SECRET_KEY=os.environ.get('SECRET_KEY', 'dev'),
       DATABASE=os.path.join(app.instance_path, 'flaskr.sqlite'),
   )
 
@@ -125,7 +125,7 @@ def create_app(test_config=None):
       except:
         percent_vax.append("Unknown")
     
-    return render_template('other/data.html', countries = countries, deceased = deceased, activecases = activecases, vaccinations = vaccinations, percent_active=percent_active, percent_vax=percent_vax, length=len(countries))
+    return render_template('other/data.html', countries = countries, population=population, deceased = deceased, activecases = activecases, vaccinations = vaccinations, percent_active=percent_active, percent_vax=percent_vax, length=len(countries))
     #how to group table (by column, by continent)
     #background colors based on % of vaccinations/active cases (based on sort?)
 
