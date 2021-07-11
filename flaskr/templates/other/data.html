@@ -1,0 +1,47 @@
+{% extends "template.html" %}
+
+{% block header %}
+  <h1>{% block title %}COVID Data{% endblock %}</h1>
+{% endblock %}
+
+{% block main %}
+  <p>ALL DATA IS SCRAPED FROM <a href="https://ncov2019.live/" target="_blank">ncov2019.live</a></p>
+  <table id = "coviddata">
+    <thead>
+      <tr>
+        <th>Country</td>
+        <th>Population</td>
+        <th>Active Cases</td>
+        <th>Active Cases % of Pop.</td>
+        <th>Vaccinations</td>
+        <th>Vaccinated % of Pop.</td>
+        <th>Deceased</td>
+      </tr>
+    </thead>
+    <tbody>
+      {% for i in range(length)%}
+        <tr>
+          <td>{{ countries[i] }}</td>
+          <td>{{ population }}</td>
+          <td>{{ activecases[i] }}</td>
+          {% if percent_active[i][:7] == 'Unknown'%}
+            <td>{{ percent_active[i][:7] }}</td>
+          {% else %}
+            <td>{{ percent_active[i][:7] }}%</td>
+          {% endif %}
+          <td>{{ vaccinations[i] }}</td>
+          {% if percent_vax[i][:7] == 'Unknown'%}
+            <td>{{ percent_vax[i][:7] }}</td>
+          {% else %}
+            <td>{{ percent_vax[i][:7] }}%</td>
+          {% endif %}
+          <td>{{ deceased[i] }}</td>
+        </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+  
+{% endblock %}
+
+{% block footer %}
+{% endblock %}

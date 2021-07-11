@@ -1,0 +1,57 @@
+.rectangle{
+  height: 550px;
+  width: 400px;
+  background-color: rgb(255, 255, 255);
+  box-shadow: 0 5px 10px 0 rgb(0 0 0 / 10%);
+  -moz-box-shadow: 0 5px 10px 0 rgba(0,0,0,.1);
+  -webkit-box-shadow: 0 5px 10px 0 rgb(0 0 0 / 10%);
+  -o-box-shadow: 0 5px 10px 0 rgba(0,0,0,.1);
+  -ms-box-shadow: 0 5px 10px 0 rgba(0,0,0,.1);
+  border-radius: 5%;
+  margin: auto;
+  
+}
+
+body{
+text-align: center;
+background-color:  #f2f2f2;
+font-family: Arial, Helvetica, sans-serif;
+}
+
+.login1{
+  height: 45px;
+  border-radius: 10px;
+  background-color: #eaeaea;
+  border: none;
+  width: 250px;
+}
+
+.login{
+border: none;
+border-radius: 50px;
+height: 50px;
+width: 250px;
+}
+
+.login:hover{
+  border-radius: 5px;
+}
+
+#coviddata td, #coviddata th{
+  border: 1px solid #ddd;
+  padding: 10px;
+}
+
+#coviddata th {
+  padding-top: 12px;
+  padding-bottom: 12px;
+  background-color: rgb(152, 185, 251);
+  color: white;
+}
+
+#coviddata {
+  font-family: Arial, Helvetica, sans-serif;
+  border-collapse: collapse;
+  width: 100%
+}
+

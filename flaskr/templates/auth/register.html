@@ -1,0 +1,24 @@
+{% extends "template.html" %}
+
+{% block header %}
+  <h1>{% block title %}Register Form Using HTML And CSS Only{% endblock %}</h1>
+{% endblock %}
+
+<!-- move register heading to header block? test result before doing -->
+
+{% block main %}
+  <div class="rectangle">
+    <br>
+    <h1>Register</h1>
+    <form action="" method="post">
+      <input class="login1" type="text" placeholder="Enter Username" name="uname" id="uname" required>
+      <br><br>
+      <input class = "login1" type="password" placeholder="Enter Password" name="upass" id="upass"required>
+      <br><br>
+      <button type = "submit" class = "login" value = "Register" >Register</button>
+    </form>
+  </div>
+{% endblock %}
+
+{% block footer %}
+{% endblock %}
