@@ -1,8 +1,11 @@
-from flask import Flask, render_template, request
+from flask import Flask, render_template, jsonify, request
+from flask_simple_geoip import SimpleGeoIP
 import os
+
 import requests
 from bs4 import BeautifulSoup as bs
-
+from flask_simple_geoip import SimpleGeoIP
+import country_converter as coco
 
 #request url + parses
 url = "https://ncov2019.live/"
@@ -10,11 +13,9 @@ r = requests.get(url)
 page = r.text
 page_soup = bs(page, "html.parser")
 
-
 #create container using worldwide table
 containers = page_soup.findAll("div", {"class": "container--wrap bg-navy-4 table-container col hide-mobile"})
 container = containers[1]
-
 
 #create functions for scraping country, deceased, active cases, and vaccination delattr
 def country_scraper():
@@ -28,7 +29,6 @@ def country_scraper():
     return_list.append(country_container_2[1].text.strip())
   
   return return_list
-
 def deceased_scraper():
   global container
   deceased_container = container.findAll('td', {"class": "text--red"})
@@ -40,7 +40,6 @@ def deceased_scraper():
       return_list.append(deceased_container_2[0].text.strip())
   
   return return_list
-
 def active_scraper():
   global container
   active_cases_container = container.findAll('td', {"class": "text--yellow"})
@@ -50,7 +49,6 @@ def active_scraper():
     return_list.append(active_cases_container[i].text.strip())
   
   return return_list
-
 def vaccination_scraper():
   global container
   vaccination_container = container.findAll('td', {"class": "text--blue"})
@@ -61,7 +59,6 @@ def vaccination_scraper():
       return_list.append(vaccination_container[i].text.strip())
   
   return return_list
-
 def population_scraper():
   global container
   population_counter = container.findAll('td', {"class": "text--blue"})
@@ -72,6 +69,8 @@ def population_scraper():
       return_list.append(population_counter[i].text.strip())
     
   return return_list
+
+
 
 #secret key practice https://stackoverflow.com/questions/30873189/where-should-i-place-the-secret-key-in-flask
 #create app function
@@ -96,9 +95,14 @@ def create_app(test_config=None):
   except OSError:
       pass
 
-  #create lists for storing scraped values
-  countries, deceased, activecases, vaccinations, population, percent_active, percent_vax = [], [], [], [], [], [], []
-  
+  app.config.update(GEOIPIFY_API_KEY='at_AqW651MpgPoINNmCXczgHMN7GE9Vy')
+  simple_geoip = SimpleGeoIP(app)
+  cc = coco.CountryConverter()
+
+  from . import auth
+  app.register_blueprint(auth.bp)
+  #from flaskr.auth import login_required
+
   #route handling
   @app.errorhandler(404)
   def pageNotFound(error):
@@ -108,13 +112,29 @@ def create_app(test_config=None):
   def home():
     return render_template('other/home.html')
 
+  @app.route('/profile')
+  @login_required
+  def profile():
+    return render_template('other/profile.html')
+
   @app.route('/data', methods=['get', 'post'])
   def data():
+    #get ip
+    geoip_data = simple_geoip.get_geoip_data()
+    js = jsonify(data=geoip_data)
+    rsp_js = js.get_json()
+    locationdata = rsp_js["data"]["location"]
+    countrycode = locationdata["country"]
+    country = cc.convert(countrycode, src = 'ISO2', to = 'name')
+
+    #create lists for storing scraped values
+    percent_active, percent_vax = [], []
     countries = country_scraper()
     deceased = deceased_scraper()
     activecases = active_scraper()
     vaccinations = vaccination_scraper()
     population = population_scraper()
+
     for i in range(len(population)):
       try:
         percent_active.append(str(100*(float(activecases[i].replace(",", "")))/(float(population[i].replace(",", "")))))
@@ -125,18 +145,18 @@ def create_app(test_config=None):
       except:
         percent_vax.append("Unknown")
     
-    return render_template('other/data.html', countries = countries, population=population, deceased = deceased, activecases = activecases, vaccinations = vaccinations, percent_active=percent_active, percent_vax=percent_vax, length=len(countries))
+    print(locationdata)
+    return render_template('other/data.html', countries = countries, population=population, deceased = deceased, activecases = activecases, vaccinations = vaccinations, percent_active=percent_active, percent_vax=percent_vax, length=len(countries), country=country, locationdata=locationdata)
     #how to group table (by column, by continent)
     #background colors based on % of vaccinations/active cases (based on sort?)
 
   from . import db
   db.init_app(app)
-
-  from . import auth
-  app.register_blueprint(auth.bp)
   
   return app
 
-"""if __name__ == '__main__':
-  create_app().run(debug=True, host='0.0.0.0')"""
+app = create_app()
+
 #https://hack-the-cloud-20.ryanlee35.repl.co/
+
+#need to install (waitress,) bs4, country_converter, flask_simple_geoip

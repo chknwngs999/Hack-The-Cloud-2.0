@@ -8,6 +8,9 @@ authors = ["Ryan Lee <ryanlee4761@gmail.com", "Sanjay Srikanth", "MrToast"]
 python = "^3.8"
 Flask = "^2.0.1"
 bs4 = "^0.0.1"
+country-converter = "^0.7.3"
+Flask-Simple-GeoIP = "^0.2.4"
+gevent = "^21.1.2"
 
 [tool.poetry.dev-dependencies]
 

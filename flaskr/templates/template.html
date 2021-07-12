@@ -8,8 +8,10 @@
   </head>
   <body>
     <nav>
+        <button><a href="{{ url_for('other.data') }}">Data</a></button>
       {% if g.user %}
         <span>Welcome {{ g.user['username'] }}!</span>
+        <a href ="{{ url_for('other.profile') }}">Profile</a>
         <a href="{{ url_for('auth.logout') }}">Log Out</a>
       {% else %}
         <button><a href="{{ url_for('auth.register') }}">Register</a></button>
@@ -21,12 +23,8 @@
     </header>
     <main>
       {% block main%}{% endblock %}
-      {% for message in get_flashed_messages() %}
-        <div class="flash">{{ message }}</div>
-      {% endfor %}
     </main>
     <footer>
-      <p>Developed with <a href = "https://flask.palletsprojects.com/en/2.0.x/tutorial/" target = "_blank" >Flask</a></p>
       {% block footer%}{% endblock %}
     </footer>
   </body>

@@ -17,6 +17,10 @@
       <br><br>
       <button type = "submit" class = "login" value = "Register" >Register</button>
     </form>
+    {% for message in get_flashed_messages() %}
+      <br>
+      <div class="flash">{{ message }}</div>
+    {% endfor %}
   </div>
 {% endblock %}
 
