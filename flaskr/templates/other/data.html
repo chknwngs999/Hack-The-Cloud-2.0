@@ -4,15 +4,15 @@
   <h1>{% block title %}COVID Data{% endblock %}</h1>
 {% endblock %}
 
+
 {% block main %}
   {% if g.user %}
-    <p>{{ client_ip }}</p>
-    <p>Your country is {{ country }}</p>
+    <p>Your country is {{ country }}.</p>
   {% else %}
-    <p><a href="{{ url_for(auth.login) }}">Login</a> or <a href="{{ url_for(auth.register) }}">Register</a> to view more data!</p>
+    <p>Login or Register to view more data!</p>
   {% endif %}
   <p>ALL DATA IS SCRAPED FROM <a href="https://ncov2019.live/" target="_blank">ncov2019.live</a></p>
-  <table id = "coviddata">
+  <table id = "coviddata" class="searchable sortable">
     <thead>
       <tr>
         <th>Country</td>
@@ -26,7 +26,11 @@
     </thead>
     <tbody>
       {% for i in range(length)%}
-        <tr>
+        {% if countries[i] == country %}
+          <tr class="bold">
+        {% else %}
+          <tr class="">
+        {% endif %}
           <td>{{ countries[i] }}</td>
           <td>{{ population[i] }}</td>
           <td>{{ activecases[i] }}</td>

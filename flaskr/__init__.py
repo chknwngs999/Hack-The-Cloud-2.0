@@ -112,11 +112,6 @@ def create_app(test_config=None):
   def home():
     return render_template('other/home.html')
 
-  @app.route('/profile')
-  @login_required
-  def profile():
-    return render_template('other/profile.html')
-
   @app.route('/data', methods=['get', 'post'])
   def data():
     #get ip
@@ -133,7 +128,7 @@ def create_app(test_config=None):
     deceased = deceased_scraper()
     activecases = active_scraper()
     vaccinations = vaccination_scraper()
-    population = population_scraper()
+    population = population_scraper()    
 
     for i in range(len(population)):
       try:
@@ -145,8 +140,20 @@ def create_app(test_config=None):
       except:
         percent_vax.append("Unknown")
     
-    print(locationdata)
-    return render_template('other/data.html', countries = countries, population=population, deceased = deceased, activecases = activecases, vaccinations = vaccinations, percent_active=percent_active, percent_vax=percent_vax, length=len(countries), country=country, locationdata=locationdata)
+    activecases_frac, percent_active_frac, vaccinations_frac, percent_vax_frac = None, None, None, None
+
+    return render_template(
+      'other/data.html', 
+      countries = countries, 
+      population=population, 
+      deceased = deceased, 
+      activecases = activecases, 
+      vaccinations = vaccinations, 
+      percent_active=percent_active, 
+      percent_vax=percent_vax, 
+      length=len(countries), 
+      country=country
+    )
     #how to group table (by column, by continent)
     #background colors based on % of vaccinations/active cases (based on sort?)
 
@@ -157,6 +164,4 @@ def create_app(test_config=None):
 
 app = create_app()
 
-#https://hack-the-cloud-20.ryanlee35.repl.co/
-
-#need to install (waitress,) bs4, country_converter, flask_simple_geoip
+#need to install (waitress,) bs4, country_converter, flask_simple_geoip in requirements.txt????

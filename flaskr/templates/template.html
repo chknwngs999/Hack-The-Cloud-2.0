@@ -8,14 +8,13 @@
   </head>
   <body>
     <nav>
-        <button><a href="{{ url_for('other.data') }}">Data</a></button>
+      <a href="{{ url_for('data') }}">Data</a>
       {% if g.user %}
         <span>Welcome {{ g.user['username'] }}!</span>
-        <a href ="{{ url_for('other.profile') }}">Profile</a>
         <a href="{{ url_for('auth.logout') }}">Log Out</a>
       {% else %}
-        <button><a href="{{ url_for('auth.register') }}">Register</a></button>
-        <button><a href="{{ url_for('auth.login') }}">Log In</a></button>
+        <a href="{{ url_for('auth.register') }}">Register</a>
+        <a href="{{ url_for('auth.login') }}">Log In</a>
       {% endif %}
     </nav>
     <header>
