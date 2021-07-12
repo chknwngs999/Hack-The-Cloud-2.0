@@ -101,7 +101,7 @@ def create_app(test_config=None):
 
   from . import auth
   app.register_blueprint(auth.bp)
-  #from flaskr.auth import login_required
+  from flaskr.auth import login_required
 
   #route handling
   @app.errorhandler(404)
