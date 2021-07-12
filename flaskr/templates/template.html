@@ -8,6 +8,7 @@
   </head>
   <body>
     <nav>
+      <a href="{{ url_for('home') }}">Home</a>
       <a href="{{ url_for('data') }}">Data</a>
       {% if g.user %}
         <span>Welcome {{ g.user['username'] }}!</span>

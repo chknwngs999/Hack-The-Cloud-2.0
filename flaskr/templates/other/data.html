@@ -26,7 +26,7 @@
     </thead>
     <tbody>
       {% for i in range(length)%}
-        {% if countries[i] == country %}
+        {% if countries[i] == country and g.user %}
           <tr class="bold">
         {% else %}
           <tr class="">
